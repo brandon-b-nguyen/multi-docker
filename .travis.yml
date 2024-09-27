@@ -1,0 +1,37 @@
+sudo: required
+language: generic
+
+
+services:
+  - docker
+
+before_install:
+  - docker build -t brandon/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true brandon/react-test npm test
+
+after_success:
+  - docker build -t brandon/multi-client ./client
+  - docker build -t brandon/multi-nginx ./nginx
+  - docker build -t brandon/multi-server ./server
+  - docker build -t brandon/multi-worker ./worker
+#   # Log in to docker CLI
+#   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+#   # Take those image and push them to docker hub
+#   - docker push brandon/multi-client
+#   - docker push brandon/multi-nginx
+#   - docker push brandon/multi-server
+#   - docker push brandon/multi-worker
+
+# deploy:
+#   provider: elasticbeanstalk
+#   region: 'us-east-2'
+#   app: 'multi-docker'
+#   env: 'Multi-docker'
+#   bucket_name: ''
+#   bucket_path: 'docker-multi'
+#   on:
+#     branch: main
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY   
