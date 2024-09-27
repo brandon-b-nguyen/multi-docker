@@ -5,23 +5,23 @@ services:
   - docker
 
 before_install:
-  - docker build -t brandon/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t brandonnguyendocker/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true brandon/react-test npm test
+  - docker run -e CI=true brandonnguyendocker/react-test npm test
 
 after_success:
-  - docker build -t brandon/multi-client ./client
-  - docker build -t brandon/multi-nginx ./nginx
-  - docker build -t brandon/multi-server ./server
-  - docker build -t brandon/multi-worker ./worker
+  - docker build -t brandonnguyendocker/multi-client ./client
+  - docker build -t brandonnguyendocker/multi-nginx ./nginx
+  - docker build -t brandonnguyendocker/multi-server ./server
+  - docker build -t brandonnguyendocker/multi-worker ./worker
   # Log in to docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those image and push them to docker hub
-  - docker push brandon/multi-client
-  - docker push brandon/multi-nginx
-  - docker push brandon/multi-server
-  - docker push brandon/multi-worker
+  - docker push brandonnguyendocker/multi-client
+  - docker push brandonnguyendocker/multi-nginx
+  - docker push brandonnguyendocker/multi-server
+  - docker push brandonnguyendocker/multi-worker
 
 # deploy:
 #   provider: elasticbeanstalk
